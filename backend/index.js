@@ -6,6 +6,17 @@ const { readdirSync } = require("fs");
 
 const app = express()
 
+require("dotenv").config();
+
+const PORT = process.env.PORT || 3000;
+
+
+// middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+app.use(morgan('combined'))
+
 
 
 // routes
@@ -13,18 +24,7 @@ readdirSync("./routes").map((route) => {
   app.use("/api/v1", require("./routes/" + route));
 });
 
-require("dotenv").config();
 
-const PORT = process.env.PORT || 3000;
-
-
-
-// middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-app.use(cors());
-app.use(morgan('combined'))
 
 app.listen(PORT, () => {
   db();
